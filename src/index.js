@@ -1,12 +1,30 @@
-class Person{
-    constructor(name) {
-        this.name = name
+class JQuery {
+    constructor(selector) {
+        let slice = Array.prototype.slice;
+        let dom = slice.call(document.querySelectorAll(selector)); // 转化为数组
+        let len = dom ? dom.length : 0
+        for (let i = 0; i < len; i++) {
+            this[i] = dom[i]
+        }
+        this.length = len
+        this.selector = selector || ''
+    }
+    append(node) {
+        //....
     }
 
-    getName() {
-        return this.name
+    addClass(name) {
+        // ...
+    }
+
+    html(data) {
+        // ...
     }
 }
 
-let p = new Person('老微风')
-alert(p.getName())
+window.$ = function (selector) {
+    return new JQuery(selector);
+}
+
+let $p = $('p')
+console.log($p);
