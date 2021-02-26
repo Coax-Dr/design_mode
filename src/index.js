@@ -125,5 +125,130 @@ let login2 = LoginForm.getInstance()
 login1.show()
 
 /**
- * 适配器模式： 封装旧接口
+ * 适配器模式： 旧接口模式和使用者不兼容，在两者之间加一个适配器用于转换接口
+ * 使用场景：封装旧接口，Vue、React等框架的计算属性
  */
+
+class Adaptee {
+    specificRequest() {
+        return '德国标准'
+    }
+}
+
+class Target {
+    constructor() {
+        this.adaptee = new Adaptee()
+    }
+    request() {
+        let info = this.adaptee.specificRequest()
+        return `${info} - 转换器 - 中国标准`
+    }
+}
+
+// 测试
+
+let target = new Target()
+let res = target.request()
+console.log('适配器模式', res)
+
+/**
+ * 装饰器模式：为对象添加新的功能，不改变其原有的结构和功能
+ * 使用场景：ES7装饰器
+ */
+
+ class Circle {
+     draw() {
+         console.log('画图')
+     }
+ }
+
+ class Decorator {
+     constructor(circle) {
+         this.circle = circle
+     }
+     setRedBorder(circle) {
+         console.log('设置红色边框')
+     }
+     draw() {
+         this.circle.draw()
+         this.setRedBorder(circle)
+     }
+ }
+
+ // 测试
+ let circle = new Circle()
+ circle.draw()
+ let decorateCircle = new Decorator(circle)
+ decorateCircle.draw()
+
+
+ // ES7的装饰器语法
+ @tesDec // 对Demo进行装饰
+ class Demo1 {
+
+ }
+
+ function tesDec(target) { // target即Demo1
+     target.isDec = true
+ }
+
+ console.log(Demo1.isDec)
+
+ function testDec(isDec) {
+     return function (target) {
+         target.isDec = isDec
+     }
+ }
+
+ @testDec(false)
+ class Demo2 {
+
+ }
+
+ console.log(Demo2.isDec)
+
+ // 自动将@识别为装饰器
+ function mixins(...list) {
+     return function (target) {
+         Object.assign(target.prototype, ...list)
+     }
+ }
+
+ const Foo = {
+     foo() {
+         console.log('哦哦哦')
+     }
+ }
+
+ @mixins(Foo)
+ class MyClass {
+
+ }
+
+ let obj = new MyClass()
+ obj.foo()
+
+
+
+//  function readonly(target, name, descriptor) {
+//      descriptor.writable = false
+//      return descriptor
+//  }
+
+ 
+//  class Person {
+//      constructor() {
+//          this.first = 'LI'
+//          this.last = 'BING'
+//      }
+
+//      @readonly
+//      name() {
+//          return `${this.first}-${this.last}`
+//      }
+//  }
+
+//  let p = new Person()
+
+//  console.log(p.name())
+
